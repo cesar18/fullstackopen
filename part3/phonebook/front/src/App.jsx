@@ -49,12 +49,12 @@ const App = () => {
 
   const handleDelete = (id, name) => () => {
     if(confirm(`Delete ${name} ?`)){
-      personService.remove(id).then(response=>{
+      personService.remove(id).then(() => {
         setPersons(persons.filter(person=>person.id !== id))
-      }).catch(error=>{
+      }).catch(error => {
         setPersons(persons.filter(person=>person.id !== id))
         setErrorMessage({
-          message: `'${name}' was already deleted from server`,
+          message: `${error.response.data.error}`,
           error: true
         })
         setTimeout(() => {
@@ -69,10 +69,12 @@ const App = () => {
     event.preventDefault()
     const newPerson = persons.find(person=>person.name === newName)
     if(newPerson === undefined){
-      personService.create({
+      personService
+      .create({
         name: newName,
         number: newNumber
-      }).then(response=>{
+      })
+      .then(response=>{
         setPersons(persons.concat(response))
         setErrorMessage({
           message: `Added ${newName}`,
@@ -82,12 +84,23 @@ const App = () => {
           setErrorMessage(noErrorMessage)
         }, 5000)
       })
+      .catch(error=>{
+        setErrorMessage({
+          message: `${error.response.data.error}`,
+          error: true
+        })
+        setTimeout(() => {
+          setErrorMessage(noErrorMessage)
+        }, 5000)
+      })
     }else{
       if(confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)){
-        personService.update(newPerson.id, {
+        personService
+        .update(newPerson.id, {
           ...newPerson,
           number: newNumber
-        }).then(response=>{
+        })
+        .then(response=>{
           setPersons(persons.map(person => person.id === response.id ? response : person))
           setErrorMessage({
             message: `Updated ${newName}`,
@@ -96,10 +109,10 @@ const App = () => {
           setTimeout(() => {
             setErrorMessage(noErrorMessage)
           }, 3000)
-        }).catch(error => {
-          setPersons(persons.filter(person=>person.name !== newName))
+        })
+        .catch(error => {         
           setErrorMessage({
-            message: `'${newName}' was already deleted from server`,
+            message: `${error.response.data.error}`,
             error: true
           })
           setTimeout(() => {
@@ -114,7 +127,7 @@ const App = () => {
 
   return (
     <div>
-      <h2>Phonebook</h2>
+      <h2>Phonebook 2</h2>
       <Notification error={errorMessage.error} message={errorMessage.message}/>
       <Filter name={filterName} handler={handleFilterChange}/>
       <h3>add a new</h3>
