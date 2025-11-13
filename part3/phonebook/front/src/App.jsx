@@ -114,6 +114,7 @@ const App = () => {
 
   return (
     <div>
+      <h2>Hi</h2>
       <h2>Phonebook</h2>
       <Notification error={errorMessage.error} message={errorMessage.message}/>
       <Filter name={filterName} handler={handleFilterChange}/>
