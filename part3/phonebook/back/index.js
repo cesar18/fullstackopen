@@ -1,6 +1,7 @@
 const express = require('express')
 const morgan = require('morgan')
 const app = express()
+app.use(express.static('dist'))
 
 app.use(express.json())
 
@@ -77,7 +78,7 @@ app.post('/api/persons', (request, response) => {
   }
 
   const person = {
-    id: Math.floor(Math.random()*10000),
+    id: `${Math.floor(Math.random()*10000)}`,
     name: body.name,
     number: body.number
   }
@@ -93,7 +94,7 @@ const unknownEndpoint = (request, response) => {
 
 app.use(unknownEndpoint)
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
 })
