@@ -65,15 +65,8 @@ app.delete('/api/persons/:id', (request, response, next) => {
       .catch(error=>next(error))
 })
 
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response, next) => {
   const body = request.body
-
-  if (!body.name || !body.number) {
-    //return is crucial to stop code further
-    return response.status(400).json({ 
-      error: 'The name or number is missing' 
-    })
-  }
 
   Person.findOne({name: body.name})
     .then(person=>{
@@ -82,37 +75,25 @@ app.post('/api/persons', (request, response) => {
           name: body.name,
           number: body.number
         })
-      }else{
+      } else {
         person.number = body.number
       }
-
       person
         .save()
         .then(personSaved=>{
           response.json(personSaved)
         })
+        .catch(error=>next(error))
     })
 })
 
 app.put('/api/persons/:id', (request, response, next) => {
-  const {name, number} = request.body
-
+  const id = request.params.id
+  const body = request.body
+  const opts = {runValidators: true }
   Person
-    .findById(request.params.id)
-    .then(person=>{
-      if(!person){
-        return response.status(400).end()
-      }
-
-      person.name = name
-      person.number = number
-
-      return person
-        .save()
-        .then((updatedPerson)=> {
-          response.json(updatedPerson)
-        })
-    })
+    .findByIdAndUpdate(id, body, opts)
+    .then(person=>response.json(person))
     .catch(error=>next(error))
 })
 
@@ -126,11 +107,15 @@ app.use(unknownEndpoint)
 
 // route to define when error ocours
 const errorHandler = (error, request, response, next) => {
+  console.error("ERRROOOORRR")
   console.error(error.message)
+  console.error(error.name)
 
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' })
-  } 
+  } else if(error.name === 'ValidationError') {
+    return response.status(400).json({error: error.message})
+  }
 
   next(error)
 }
