@@ -7,14 +7,13 @@
     "start": "node index.js",
     "dev": "node --watch index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:ui": "rm -rf dist && cd ../front && npm run build && cp -r ./dist ../back",
+    "build:ui": "rm -rf dist && cd ../front && npm install && npm run build && cp -r ./dist ../back",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push"
   },
   "author": "Cesar",
   "license": "ISC",
   "dependencies": {
     "express": "^5.1.0",
-    "morgan": "^1.10.1",
-    "vite": "^7.2.2"
+    "morgan": "^1.10.1"
   }
 }
