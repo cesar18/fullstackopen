@@ -1,0 +1,50 @@
+GET http://localhost:3003/api/blogs
+
+###
+GET http://localhost:3003/api/users
+
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNlc2FyMiIsImlkIjoiNjkxOGUyY2Y5MWY0ODI5NDljZGY4ZTkyIiwiaWF0IjoxNzYzMjM5OTk1LCJleHAiOjE3NjMyNDM1OTV9.j4MjmslSs8DyZ8w3Ifu3NEzCdz6T42S5Y7dYcrrVd1g
+
+{
+  "title": "New Blog Post 34",
+  "author": "Jane Doe 2",
+  "url": "http://example.com/new-blog-post",
+  "likes": 56
+}
+
+###
+DELETE http://localhost:3003/api/blogs/6918dea8aa33bbd59b3c986f
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNlc2FyMiIsImlkIjoiNjkxOGUyY2Y5MWY0ODI5NDljZGY4ZTkyIiwiaWF0IjoxNzYzMjM5OTk1LCJleHAiOjE3NjMyNDM1OTV9.j4MjmslSs8DyZ8w3Ifu3NEzCdz6T42S5Y7dYcrrVd1g
+
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+  "username": "cesar",
+  "password": "123456",
+  "name": "Cesar Cícero"
+}
+
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+  "username": "cesar2",
+  "password": "123456",
+  "name": "Cesar Cícero 2"
+}
+
+###
+POST http://localhost:3003/api/login
+Content-Type: application/json
+
+{
+  "username": "cesar2",
+  "password": "123456"
+}
