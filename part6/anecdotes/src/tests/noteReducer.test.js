@@ -1,6 +1,6 @@
 import deepFreeze from 'deep-freeze'
 import { describe, expect, test } from 'vitest'
-import noteReducer from '../reducers/noteReducer'
+import noteReducer from '../reducers/anecdotesReducer'
 
 describe('noteReducer', () => {
   test('returns new state with action NEW_NOTE', () => {
