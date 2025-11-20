@@ -1,4 +1,17 @@
-const anecdotesReducer = (state = [], action) => {
+const initialAnecdotes = [
+  {
+    content: 'If it hurts, do it more often',
+    id: 1,
+    votes: 0
+  },
+  {
+    content: 'Adding manpower to a late software project makes it later!',
+    id: 2,
+    votes: 0
+  }
+]
+
+const anecdotesReducer = (state = initialAnecdotes, action) => {
   switch (action.type) {
     case 'NEW_ANECDOTE':
       return [...state, action.payload]
