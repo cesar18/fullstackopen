@@ -1,3 +1,5 @@
+import { createSlice } from '@reduxjs/toolkit'
+
 const initialAnecdotes = [
   {
     content: 'If it hurts, do it more often',
@@ -11,41 +13,31 @@ const initialAnecdotes = [
   }
 ]
 
-const anecdotesReducer = (state = initialAnecdotes, action) => {
-  switch (action.type) {
-    case 'NEW_ANECDOTE':
-      return [...state, action.payload]
-    case 'VOTE':
+const generateId = () => Number((Math.random() * 1000000).toFixed(0))
+
+// createSlice uses Immer library,
+// which allows us to write "mutating" states, once imutable
+const anecdotesSlice = createSlice({
+  name: 'anecdotes',
+  initialState: initialAnecdotes,
+  reducers: {
+    createAnecdote(state, action) {
+      return state.concat({
+        content: action.payload,
+        id: generateId(),
+        votes: 0
+      })
+    },
+    voteAnecdote(state, action) {
+      const id = action.payload
       return state.map(anecdote =>
-        anecdote.id !== action.payload.id
+        anecdote.id !== id
           ? anecdote
           : { ...anecdote, votes: anecdote.votes + 1 }
       )
-    default:
-      return state
-  }
-}
-
-const generateId = () => Number((Math.random() * 1000000).toFixed(0))
-
-export const createAnecdote = content => {
-  return {
-    type: 'NEW_ANECDOTE',
-    payload: {
-      content,
-      id: generateId(),
-      votes: 0
     }
   }
-}
+})
 
-export const voteAnecdote = id => {
-  return {
-    type: 'VOTE',
-    payload: {
-      id
-    }
-  }
-}
-
-export default anecdotesReducer
+export const { createAnecdote, voteAnecdote } = anecdotesSlice.actions
+export default anecdotesSlice.reducer
